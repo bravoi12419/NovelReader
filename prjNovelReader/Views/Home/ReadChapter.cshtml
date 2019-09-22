@@ -1,0 +1,47 @@
+﻿@model prjNovelReader.Models.ViewModels.ReadChapterViewModel
+@{
+    ViewBag.Title = Model.NovelName;
+}
+<h2>@Model.NovelName</h2>
+@using (Html.BeginForm("ReadChapter", "Home", new { }, 0, new { @class = "row" }))
+{
+    <div>
+        <div class="col-md-2">
+            @Html.Label("選擇字形 : ")
+            @Html.Raw(ViewData["glyphDList"])
+        </div>
+        <div class="col-md-2">
+            @Html.Label("選擇大小 : ")
+            @Html.Raw(ViewData["sizeDList"])
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div style="" class="col-md-2">
+            @Html.Label(" ")
+            <input type="submit" class="btn btn-default form-control" value="調整" />
+        </div>
+    </div>
+}
+
+<div style="font-size:@ViewBag.size font-family:@ViewBag.glyph width:800px">
+    @Html.Raw(Model.ChapterText)
+</div>
+
+<div class="row">
+    <div class="left col-md-4">
+        @{
+            if (Model.ChapterId != 1)
+            {
+                @Html.ActionLink("上一章", "ReadChapter", new { id = ViewData["PreviousId"], glyph = ViewData["currentGlyph"], size = ViewData["currentSize"] })
+            }
+        }
+    </div>
+    <div class=" col-md-4">
+        @ViewData["NovelId"]
+        @Html.ActionLink("返回章節列表", "ReadNovel", new { novelId = Model.NovelId })
+    </div>
+    <div class="right col-md-4">
+        @Html.ActionLink("下一章", "ReadChapter", new { id = ViewData["NextId"], glyph = ViewData["currentGlyph"], size = ViewData["currentSize"] })
+    </div>
+</div>

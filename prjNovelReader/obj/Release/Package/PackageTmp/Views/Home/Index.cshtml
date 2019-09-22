@@ -1,0 +1,87 @@
+﻿@model IPagedList<prjNovelReader.Models.ViewModels.IndexViewModel>
+@{
+    ViewBag.Title = "書庫";
+}
+<h2>書庫</h2>
+
+@using (Html.BeginForm("Index", "Home", 0, new { @class = "row" }))
+{
+    <div>
+        <div class="col-md-2">
+            @Html.Label("依名稱搜尋 : ")
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            @Html.Label("依種類搜尋 : ")
+            @Html.Raw(ViewData["cate"])
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
+        <div style="" class="col-md-2">
+            @Html.Label(" ")
+            <input type="submit" class="btn btn-default form-control" value="開始搜尋" />
+        </div>
+    </div>
+}
+<p> </p>
+<table class="table">
+    <tr class="row">
+        <th class="col-md-10">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page ,cate=ViewBag.CurrenCate , currentFilter = ViewBag.CurrentFilter }),new PagedListRenderOptions {
+           LinkToFirstPageFormat = "最首頁",
+           LinkToPreviousPageFormat = "前一頁",
+           LinkToNextPageFormat = "下一頁",
+           LinkToLastPageFormat = "最末頁"
+       })
+        </th>
+        <th style="vertical-align:middle" class="col-md-2">
+            @{ var pagCounAndCurrentLocation = string.Format("第 {0} 頁 / 第 {1} 頁", Model.PageNumber, Model.PageCount);}
+            @pagCounAndCurrentLocation
+        </th>
+    </tr>
+</table>
+<table class="table">
+    <tr class="row">
+        <th class="col-md-4">
+            @Html.DisplayNameFor(m => m.FirstOrDefault().NovelName)
+        </th>
+        <th class="col-md-2">
+            @Html.DisplayNameFor(m => m.FirstOrDefault().Author)
+        </th>
+        <th class="col-md-2">
+            @Html.DisplayNameFor(m => m.FirstOrDefault().Category)
+        </th>
+        <th class="col-md-2"></th>
+        <th class="col-md-2"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr class="row">
+            <td class="col-md-4">
+                @Html.DisplayFor(modelItem => item.NovelName)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td class="col-md-2">
+            <td class="col-md-2">
+                @Html.ActionLink("開始閱讀", "ReadNovel",new { novelId = item.Id },new {@class="btn btn-default" })
+            </td>
+        </tr>
+    }
+</table>
+<p> </p>
+<div>
+    <!--Html.Partial("Bookshelf",Model)-->
+</div>
+
+
+
+
+
+
+

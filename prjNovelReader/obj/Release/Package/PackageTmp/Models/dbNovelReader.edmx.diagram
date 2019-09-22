@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5b4cfb547a9c4d818337e9c8638e990d" Name="Diagram1">
+        <EntityTypeShape EntityType="dbNovelReaderModel.tAuthor" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbNovelReaderModel.tCategory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbNovelReaderModel.tNovel" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbNovelReaderModel.tNovelTextC" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbNovelReaderModel.tNovelTextJ" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="dbNovelReaderModel.FK__tNovel__AuthorId__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="dbNovelReaderModel.FK__tNovel__Category__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="dbNovelReaderModel.FK__tNovelTex__Novel__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="dbNovelReaderModel.FK__tNovelTex__Novel__4222D4EF" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

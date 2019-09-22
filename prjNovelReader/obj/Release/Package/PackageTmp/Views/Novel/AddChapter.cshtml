@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "新增章節";
+}
+
+<h2>請選擇擷取哪個網站的小說</h2>
+@{
+    string url1 = "AddChapterChina?newNovelName=" + ViewBag.newNovelName + "&newNovelAuthor=" + ViewBag.newNovelAuthor;
+    string url2 = "AddChapterJapan?newNovelName=" + ViewBag.newNovelName + "&newNovelAuthor=" + ViewBag.newNovelAuthor;
+ }
+<ul class="">
+    <li> @Html.ActionLink("卡提諾論壇", "AddChapterChina", "Novel",new { newNovelName= ViewBag.newNovelName, newNovelAuthor = ViewBag.newNovelAuthor },new { @class = "btn btn-default" })</li>
+    <li> @Html.ActionLink("輕小說文庫", "AddChapterJapan", "Novel", new { @class = "btn btn-default" })</li>
+</ul>
+

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dbNovelReaderModelStoreContainer" CdmEntityContainer="dbNovelReaderEntities">
+    <EntitySetMapping Name="tAuthor">
+      <EntityTypeMapping TypeName="dbNovelReaderModel.tAuthor">
+        <MappingFragment StoreEntitySet="tAuthor">
+          <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tCategory">
+      <EntityTypeMapping TypeName="dbNovelReaderModel.tCategory">
+        <MappingFragment StoreEntitySet="tCategory">
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tNovel">
+      <EntityTypeMapping TypeName="dbNovelReaderModel.tNovel">
+        <MappingFragment StoreEntitySet="tNovel">
+          <ScalarProperty Name="NovelId" ColumnName="NovelId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tNovelTextC">
+      <EntityTypeMapping TypeName="dbNovelReaderModel.tNovelTextC">
+        <MappingFragment StoreEntitySet="tNovelTextC">
+          <ScalarProperty Name="NovelTextId" ColumnName="NovelTextId" />
+          <ScalarProperty Name="NovelId" ColumnName="NovelId" />
+          <ScalarProperty Name="ChapterNum" ColumnName="ChapterNum" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tNovelTextJ">
+      <EntityTypeMapping TypeName="dbNovelReaderModel.tNovelTextJ">
+        <MappingFragment StoreEntitySet="tNovelTextJ">
+          <ScalarProperty Name="NovelTextId" ColumnName="NovelTextId" />
+          <ScalarProperty Name="NovelId" ColumnName="NovelId" />
+          <ScalarProperty Name="ReelNum" ColumnName="ReelNum" />
+          <ScalarProperty Name="ChapterNum" ColumnName="ChapterNum" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

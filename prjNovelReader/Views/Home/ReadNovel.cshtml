@@ -1,0 +1,49 @@
+﻿@model prjNovelReader.Models.ViewModels.ShowChapterViewModel
+
+@{
+    ViewBag.Title = "章節列表";
+}
+
+<div>
+    <div style="font-size:24px;">
+        @Html.DisplayNameFor(model => model.NovelName) : @Model.NovelName
+    </div>
+    <div style="font-size:24px;">
+        @Html.DisplayNameFor(model => model.Category) : @Model.Category
+    </div>
+    <div class="row">
+        <div class="col-md-8"  style="font-size:24px;">
+            @Html.DisplayNameFor(model => model.Author) : @Model.Author
+        </div>
+        <div class="col-md-2">
+            @Html.ActionLink("編輯小說資訊", "Edit", "Novel", new { id = @Model.NovelId }, new {@class= "btn btn-default" })
+        </div>
+        <div class="col-md-2">
+            @Html.ActionLink("刪除整本小說", "Delete","Novel", new { id = @Model.NovelId}, new { @class = "btn btn-default" })
+        </div>
+    </div>
+</div>
+
+
+
+<table class="table">
+    <tr>
+        <th>
+            章節列表 :
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.ChapterList)
+    {
+        <tr>
+            <td class="col-md-8">
+                @Html.ActionLink("第 "+ @Html.DisplayFor(modelItem => item.ChapterNum)+" 章","ReadChapter",new {id=item.NovelTextId ,novelId = item.NovelId})
+            </td>
+            <td class="col-md-4">
+                @Html.ActionLink("刪除", "DeleteChapter", "Novel", new { id = item.NovelTextId, novelId = item.NovelId },"")
+            </td>
+        </tr>
+    }
+
+</table>
