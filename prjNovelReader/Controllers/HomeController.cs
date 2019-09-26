@@ -16,21 +16,21 @@ namespace prjNovelReader.Controllers
         }
 
         // GET: Home
-        public ActionResult Index(int? currentCate, string currentFilter, string searchString,int? cate,int page=1)
+        public ActionResult Index(string searchString,int categoryId=0, int page=1)
         {
-            ViewBag.CurrenCate = cate;
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-            ViewBag.CurrentFilter = searchString;
-            ViewData["cate"] = homeService.GetCategoryDList(cate);
-            return View("Index", homeService.ShowNovel(searchString, cate, page));
+            ViewBag.categoryDList = homeService.GetCategoryDList(categoryId);
+            ViewBag.categoryId = categoryId;
+            ViewBag.searchString = searchString;
+            ViewBag.page = page;
+
+            return View();
         }
+        public ActionResult Bookshelf(string searchString, int? categoryId, int page = 1)
+        {
+            if (categoryId == 0) categoryId = null;
+            return PartialView(homeService.ShowNovel(searchString, categoryId, page));
+        }
+
         public ActionResult ReadNovel(int novelId)
         {
 

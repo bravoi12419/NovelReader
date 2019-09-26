@@ -4,80 +4,91 @@
 }
 <h2>書庫</h2>
 
-@using (Html.BeginForm("Index", "Home", 0, new { @class = "row" }))
-{
-    <div>
-        <div class="col-md-2">
-            @Html.Label("依名稱搜尋 : ")
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
-        </div>
-        <div class="col-md-2">
-            @Html.Label("依種類搜尋 : ")
-            @Html.Raw(ViewData["cate"])
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-2"></div>
-        <div class="col-md-2"></div>
-        <div style="" class="col-md-2">
-            @Html.Label(" ")
-            <input type="submit" class="btn btn-default form-control" value="開始搜尋" />
-        </div>
-    </div>
-}
-<p> </p>
-<table class="table">
-    <tr class="row">
-        <th class="col-md-10">
-            @Html.PagedListPager(Model, page => Url.Action("Index", new { page ,cate=ViewBag.CurrenCate , currentFilter = ViewBag.CurrentFilter }),new PagedListRenderOptions {
-           LinkToFirstPageFormat = "最首頁",
-           LinkToPreviousPageFormat = "前一頁",
-           LinkToNextPageFormat = "下一頁",
-           LinkToLastPageFormat = "最末頁"
-       })
-        </th>
-        <th style="vertical-align:middle" class="col-md-2">
-            @{ var pagCounAndCurrentLocation = string.Format("第 {0} 頁 / 第 {1} 頁", Model.PageNumber, Model.PageCount);}
-            @pagCounAndCurrentLocation
-        </th>
-    </tr>
-</table>
-<table class="table">
-    <tr class="row">
-        <th class="col-md-4">
-            @Html.DisplayNameFor(m => m.FirstOrDefault().NovelName)
-        </th>
-        <th class="col-md-2">
-            @Html.DisplayNameFor(m => m.FirstOrDefault().Author)
-        </th>
-        <th class="col-md-2">
-            @Html.DisplayNameFor(m => m.FirstOrDefault().Category)
-        </th>
-        <th class="col-md-2"></th>
-        <th class="col-md-2"></th>
-    </tr>
-    @foreach (var item in Model)
+<div class="container body-content">
+    @using (Html.BeginForm("index", "Home", 0, new { @class = "row" }))
     {
-        <tr class="row">
-            <td class="col-md-4">
-                @Html.DisplayFor(modelItem => item.NovelName)
-            </td>
-            <td class="col-md-2">
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td class="col-md-2">
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td class="col-md-2">
-            <td class="col-md-2">
-                @Html.ActionLink("開始閱讀", "ReadNovel",new { novelId = item.Id },new {@class="btn btn-default" })
-            </td>
-        </tr>
+        <div class="col-sm-3">
+            @Html.Label("依名稱搜尋 : ")
+            @Html.TextBox("searchString", ViewBag.searchString as string, new { @class = "form-control" })
+        </div>
+        <div class="col-sm-3">
+            @Html.Label("依種類搜尋 : ")
+            @Html.Raw(ViewBag.categoryDList)
+        </div>
+        <div class="col-sm-3" style="height:59px;">
+            <div style="position:absolute; top:25px; left:100px">
+                <input type="submit" class="btn btn-default form-control" value="開始搜尋" />
+            </div>
+        </div>
+        <div class="col-sm-3" style="height:59px;">
+            <div style="position:absolute; top:25px;">
+                <div class="btn btn-default" id="resetBtn">清除篩選</div>
+            </div>
+        </div>
     }
-</table>
-<p> </p>
-<div>
-    <!--Html.Partial("Bookshelf",Model)-->
+    <div id="OrderData">
+        Loading...
+    </div>
 </div>
+
+<script>
+        $('#categoryId').change(function () {
+            window.location = `/Home/index?categoryId=${$('#categoryId').val()}&searchString=${$('#searchString').val()}`})
+        $('#resetBtn').click(() => { window.location = "/Home/index" })
+
+        $(() => {
+            let page = @ViewBag.page;
+            fetchPage(page);
+        })
+        function fetchPage(page) {
+            $('#OrderData').html('<div id="OrderData">Loading...</div>')
+            let pagePartialUrl = '@Url.Action("Bookshelf", "Home")';
+            $.ajax({
+                url: pagePartialUrl,
+                data: { page: page, categoryId: @ViewBag.categoryId , searchString: $('#searchString').val()},
+                type: 'GET',
+                success: data => {
+                    setTimeout(() => {
+                        console.log("完成!")
+                        getPagedList(data)
+                    }, 0)
+                },
+                error: () => { console.log("失敗")}
+            })
+        };
+
+        function getPagedList(data) {
+            $('#OrderData').html(data)
+            $('#OrderData .pagination li a').each(function (i, item) {
+                let hyperLinkUrl = $(item).attr('href')
+                if (typeof hyperLinkUrl !== 'undefined' && hyperLinkUrl !== false) {
+                    let pageNumber = $(item).attr('href').replace('/?page=', '')
+                    $(item).attr('href', '?page=' + pageNumber).click(function (event) {
+                        event.preventDefault();
+                        let url = '/Home/index' + $(item).attr('href');
+                        let newTitle = "TEST";
+                        fetchPage(pageNumber);
+                        if (history.pushState) {
+                            let state = ({
+                                page: pageNumber, title: newTitle
+                            })
+                            window.history.pushState(state, newTitle, url);
+                        }
+                    })
+                } else {
+                    if ($(item).parent('li').attr('class') !== "active")
+                        $(item).parent('li').html('<div style="display:none;"></div>')
+                }
+            })
+        }
+
+        window.addEventListener('popstate', function (e) {
+            if (e.state === null) fetchPage(1);
+            else {
+                fetchPage(e.state.page);
+            }
+        },false)
+</script>
 
 
 

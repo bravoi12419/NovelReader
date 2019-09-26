@@ -17,7 +17,7 @@ namespace prjNovelReader.Models.Service
         private IRepository<tCategory> categoryRepository = new GenericRepository<tCategory>();
         private IRepository<tNovel> novelRepository = new GenericRepository<tNovel>();
         private IRepository<tNovelTextC> textCRepository = new GenericRepository<tNovelTextC>();
-        private int pageSize = 10;
+        private int pageSize = 3;
         public string GetDropdownList(string name, IDictionary<string, string> optionData, object htmlAttributes, string defaultSelectValue, bool appendOptionLabel, string optionLabel)
         {
             //name=tag內名稱  optionData=選單選項 htmlAttributes=額外增加的html defaultSelectValue=默認選擇選項(selected) appendOptionLabel=是否額外加上選項(全部) optionLabel=額外選項字串
@@ -52,7 +52,7 @@ namespace prjNovelReader.Models.Service
             select.InnerHtml = renderHtmlTag.ToString(); //插入select內部
             return select.ToString();
         }
-        public string GetCategoryDList(int? cate)
+        public string GetCategoryDList(int? categoryId)
         {
             var dict = new Dictionary<string, string>();
             var categories = categoryRepository.GetAll().ToList();
@@ -62,22 +62,22 @@ namespace prjNovelReader.Models.Service
             }
             return GetDropdownList
             (
-            "cate",
+            "categoryId",
             dict,
-            new { @class = "form-control", id = "cate" },
-            cate.ToString(),
+            new { @class = "form-control", id = "categoryId" },
+            categoryId.ToString(),
             true,
             "全部"
             );
         }
-        public IPagedList<IndexViewModel> ShowNovel(string searchString, int? cate, int page)
+        public IPagedList<IndexViewModel> ShowNovel(string searchString, int? categoryId, int page)
         {
             var indexVMs = new List<IndexViewModel>();
             var novels = new List<tNovel>();
 
-            if (cate != null)
+            if (categoryId != null)
             {
-                novels = novelRepository.GetSome(m => m.CategoryId == cate).ToList();
+                novels = novelRepository.GetSome(m => m.CategoryId == categoryId).ToList();
             }
             else
             {

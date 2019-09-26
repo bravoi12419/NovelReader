@@ -8,10 +8,10 @@ namespace prjNovelReader.Models.Service.Interface
 {
     public interface IHomeService
     {
-        IPagedList<IndexViewModel> ShowNovel(string searchString, int? cate, int page = 1);
+        IPagedList<IndexViewModel> ShowNovel(string searchString, int? categoryId, int page = 1);
         ShowChapterViewModel ShowChapterC(int novelId);
         ReadChapterViewModel ReadChapter (int chapterId);
-        string GetCategoryDList(int? cate);
+        string GetCategoryDList(int? categoryId);
         string GetDropdownList(string name, IDictionary<string, string> optionData, object htmlAttributes, string defaultSelectValue, bool appendOptionLabel, string optionLabel);
 
     }
