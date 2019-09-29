@@ -3,45 +3,148 @@
     ViewBag.Title = Model.NovelName;
 }
 <h2>@Model.NovelName</h2>
-@using (Html.BeginForm("ReadChapter", "Home", new { }, 0, new { @class = "row" }))
-{
-    <div>
-        <div class="col-md-2">
-            @Html.Label("選擇字形 : ")
-            @Html.Raw(ViewData["glyphDList"])
-        </div>
-        <div class="col-md-2">
-            @Html.Label("選擇大小 : ")
-            @Html.Raw(ViewData["sizeDList"])
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-2"></div>
-        <div class="col-md-2"></div>
-        <div style="" class="col-md-2">
-            @Html.Label(" ")
-            <input type="submit" class="btn btn-default form-control" value="調整" />
-        </div>
-    </div>
-}
+<style>
+    .myBorder {
+        border-style: double;
+        border-width: medium;
+        border-color: black;
+    }
 
-<div style="font-size:@ViewBag.size font-family:@ViewBag.glyph width:800px">
+    .chapterContent {
+        max-width: 1000px;
+        margin:100px 0;
+    }
+
+    .right-nav {
+        position: fixed;
+        width: auto;
+        height: auto;
+        max-height: 500px;
+        padding: 0 20px 20px 20px;
+        top: 200px;
+        right: 100px;
+    }
+
+        .right-nav .btn-group-vertical {
+            width: 100px;
+            margin: 0 auto;
+        }
+
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+</style>
+
+<div class="right-nav myBorder">
+    <ul class="nav nav-pills nav-stacked">
+        <li id="fontSize">
+            <h3 class="text-center">大小</h3>
+            <div class="btn-group-vertical ">
+                <button value="0" class="btn btn-info">小</button>
+                <button value="1" class="btn btn-info">中</button>
+                <button value="2" class="btn btn-info">大</button>
+            </div>
+        </li>
+        <li id="fontFamily">
+            <h3 class="text-center">字形</h3>
+            <div class="btn-group-vertical">
+                <button value="0" class="btn btn-warning">新細明體</button>
+                <button value="1" class="btn btn-warning">標楷體</button>
+                <button value="2" class="btn btn-warning">微軟正黑體</button>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="chapterContent text-left" style="">
     @Html.Raw(Model.ChapterText)
 </div>
 
 <div class="row">
-    <div class="left col-md-4">
+    <div class="col-md-4" id="previousPage">
         @{
-            if (Model.ChapterId != 1)
-            {
-                @Html.ActionLink("上一章", "ReadChapter", new { id = ViewData["PreviousId"], glyph = ViewData["currentGlyph"], size = ViewData["currentSize"] })
+            if (Model.ChapterId != 1){
+                <button class="btn btn-default">上一章</button>
             }
         }
     </div>
-    <div class=" col-md-4">
+    <div class="col-md-4">
         @ViewData["NovelId"]
-        @Html.ActionLink("返回章節列表", "ReadNovel", new { novelId = Model.NovelId })
+        @Html.ActionLink("返回章節列表", "ReadNovel", new { novelId = Model.NovelId }, new { @class = "btn  btn-default" })
     </div>
-    <div class="right col-md-4">
-        @Html.ActionLink("下一章", "ReadChapter", new { id = ViewData["NextId"], glyph = ViewData["currentGlyph"], size = ViewData["currentSize"] })
+    <div class="col-md-4" id="nextPage">
+        <button class="btn btn-default">下一章</button>
     </div>
 </div>
+<script>
+    $(() => {
+        let size = "@ViewData["currentSize"]"
+        let glyph = "@ViewData["currentGlyph"]"
+        $('#fontSize button').each(function (i, item) {
+            if ($(item).val() === size) {
+                $(item).addClass('active')
+            }
+            $(item).click((e) => {
+                $('#fontSize .active').removeClass('active')
+                $(e.toElement).addClass('active')
+                let num = $(e.toElement).val()
+                changeSize(num)
+            })
+        })
+        $('#fontFamily button').each(function (i, item) {
+            if ($(item).val() === glyph) {
+                $(item).addClass('active')
+            }
+            $(item).click((e) => {
+                $('#fontFamily .active').removeClass('active')
+                $(e.toElement).addClass('active')
+                let num = $(e.toElement).val()
+                changeFamily(num)
+            })
+        })
+        changeSize(size)
+        changeFamily(glyph)
+    })
+    function changeSize(num) {
+        switch (num) {
+            case '0':
+                $('.chapterContent').css('font-size', '16px')
+                break;
+            case '1':
+                $('.chapterContent').css('font-size', '24px')
+                break;
+            case '2':
+                $('.chapterContent').css('font-size', '32px')
+                break;
+        }
+    }
+    function changeFamily(num) {
+        switch (num) {
+            case '0':
+                $('.chapterContent').css('font-family', 'PMingLiU')
+                break;
+            case '1':
+                $('.chapterContent').css('font-family', 'DFKai-sb')
+                break;
+            case '2':
+                $('.chapterContent').css('font-family', 'Microsoft JhengHei')
+                break;
+        }
+    }
+    $('#nextPage button').click(() => {
+        let id = "@ViewData["NextId"]"
+        ReadChapter(id)
+    })
+    $('#previousPage button').click(() => {
+        let id = "@ViewData["PreviousId"]"
+        ReadChapter(id)
+    })
+    function ReadChapter(id) {
+        let size = $('#fontSize .active').val()
+        let family = $('#fontFamily .active').val()
+        let url = `/Home/ReadChapter?id=${id}&glyph=${family}&size=${size}`
+        window.location = url
+    }
+</script>
