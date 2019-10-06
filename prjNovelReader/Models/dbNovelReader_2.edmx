@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BanaSideProjectDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tAuthor">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="AuthorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="tCategory">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="tNovel">
+          <Key>
+            <PropertyRef Name="NovelId" />
+          </Key>
+          <Property Name="NovelId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="AuthorId" Type="int" />
+          <Property Name="Type" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tNovelTextC">
+          <Key>
+            <PropertyRef Name="NovelTextId" />
+          </Key>
+          <Property Name="NovelTextId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NovelId" Type="int" />
+          <Property Name="ChapterNum" Type="int" />
+          <Property Name="Text" Type="ntext" />
+        </EntityType>
+        <EntityType Name="tNovelTextJ">
+          <Key>
+            <PropertyRef Name="NovelTextId" />
+          </Key>
+          <Property Name="NovelTextId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NovelId" Type="int" />
+          <Property Name="ReelNum" Type="int" />
+          <Property Name="ChapterNum" Type="int" />
+          <Property Name="Text" Type="ntext" />
+        </EntityType>
+        <Association Name="FK__tNovel__AuthorId__4E88ABD4">
+          <End Role="tAuthor" Type="Self.tAuthor" Multiplicity="0..1" />
+          <End Role="tNovel" Type="Self.tNovel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tAuthor">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="tNovel">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tNovel__Category__4D94879B">
+          <End Role="tCategory" Type="Self.tCategory" Multiplicity="0..1" />
+          <End Role="tNovel" Type="Self.tNovel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tCategory">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="tNovel">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tNovelTex__Novel__5CD6CB2B">
+          <End Role="tNovel" Type="Self.tNovel" Multiplicity="0..1" />
+          <End Role="tNovelTextJ" Type="Self.tNovelTextJ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tNovel">
+              <PropertyRef Name="NovelId" />
+            </Principal>
+            <Dependent Role="tNovelTextJ">
+              <PropertyRef Name="NovelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tNovelTex__Novel__5FB337D6">
+          <End Role="tNovel" Type="Self.tNovel" Multiplicity="0..1" />
+          <End Role="tNovelTextC" Type="Self.tNovelTextC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tNovel">
+              <PropertyRef Name="NovelId" />
+            </Principal>
+            <Dependent Role="tNovelTextC">
+              <PropertyRef Name="NovelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BanaSideProjectDbModelStoreContainer">
+          <EntitySet Name="tAuthor" EntityType="Self.tAuthor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tCategory" EntityType="Self.tCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tNovel" EntityType="Self.tNovel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tNovelTextC" EntityType="Self.tNovelTextC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tNovelTextJ" EntityType="Self.tNovelTextJ" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tNovel__AuthorId__4E88ABD4" Association="Self.FK__tNovel__AuthorId__4E88ABD4">
+            <End Role="tAuthor" EntitySet="tAuthor" />
+            <End Role="tNovel" EntitySet="tNovel" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tNovel__Category__4D94879B" Association="Self.FK__tNovel__Category__4D94879B">
+            <End Role="tCategory" EntitySet="tCategory" />
+            <End Role="tNovel" EntitySet="tNovel" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tNovelTex__Novel__5CD6CB2B" Association="Self.FK__tNovelTex__Novel__5CD6CB2B">
+            <End Role="tNovel" EntitySet="tNovel" />
+            <End Role="tNovelTextJ" EntitySet="tNovelTextJ" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tNovelTex__Novel__5FB337D6" Association="Self.FK__tNovelTex__Novel__5FB337D6">
+            <End Role="tNovel" EntitySet="tNovel" />
+            <End Role="tNovelTextC" EntitySet="tNovelTextC" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BanaSideProjectDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tAuthor">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="AuthorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tNovel" Relationship="Self.FK__tNovel__AuthorId__4E88ABD4" FromRole="tAuthor" ToRole="tNovel" />
+        </EntityType>
+        <EntityType Name="tCategory">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tNovel" Relationship="Self.FK__tNovel__Category__4D94879B" FromRole="tCategory" ToRole="tNovel" />
+        </EntityType>
+        <EntityType Name="tNovel">
+          <Key>
+            <PropertyRef Name="NovelId" />
+          </Key>
+          <Property Name="NovelId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="AuthorId" Type="Int32" />
+          <NavigationProperty Name="tAuthor" Relationship="Self.FK__tNovel__AuthorId__4E88ABD4" FromRole="tNovel" ToRole="tAuthor" />
+          <NavigationProperty Name="tCategory" Relationship="Self.FK__tNovel__Category__4D94879B" FromRole="tNovel" ToRole="tCategory" />
+          <NavigationProperty Name="tNovelTextC" Relationship="Self.FK__tNovelTex__Novel__5165187F" FromRole="tNovel" ToRole="tNovelTextC" />
+          <NavigationProperty Name="tNovelTextJ" Relationship="Self.FK__tNovelTex__Novel__5441852A" FromRole="tNovel" ToRole="tNovelTextJ" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tNovelTextC">
+          <Key>
+            <PropertyRef Name="NovelTextId" />
+          </Key>
+          <Property Name="NovelTextId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NovelId" Type="Int32" />
+          <Property Name="ChapterNum" Type="Int32" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tNovel" Relationship="Self.FK__tNovelTex__Novel__5165187F" FromRole="tNovelTextC" ToRole="tNovel" />
+        </EntityType>
+        <EntityType Name="tNovelTextJ">
+          <Key>
+            <PropertyRef Name="NovelTextId" />
+          </Key>
+          <Property Name="NovelTextId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NovelId" Type="Int32" />
+          <Property Name="ReelNum" Type="Int32" />
+          <Property Name="ChapterNum" Type="Int32" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tNovel" Relationship="Self.FK__tNovelTex__Novel__5441852A" FromRole="tNovelTextJ" ToRole="tNovel" />
+        </EntityType>
+        <Association Name="FK__tNovel__AuthorId__4E88ABD4">
+          <End Role="tAuthor" Type="Self.tAuthor" Multiplicity="0..1" />
+          <End Role="tNovel" Type="Self.tNovel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tAuthor">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="tNovel">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tNovel__Category__4D94879B">
+          <End Role="tCategory" Type="Self.tCategory" Multiplicity="0..1" />
+          <End Role="tNovel" Type="Self.tNovel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tCategory">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="tNovel">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tNovelTex__Novel__5165187F">
+          <End Role="tNovel" Type="Self.tNovel" Multiplicity="0..1" />
+          <End Role="tNovelTextC" Type="Self.tNovelTextC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tNovel">
+              <PropertyRef Name="NovelId" />
+            </Principal>
+            <Dependent Role="tNovelTextC">
+              <PropertyRef Name="NovelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tNovelTex__Novel__5441852A">
+          <End Role="tNovel" Type="Self.tNovel" Multiplicity="0..1" />
+          <End Role="tNovelTextJ" Type="Self.tNovelTextJ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tNovel">
+              <PropertyRef Name="NovelId" />
+            </Principal>
+            <Dependent Role="tNovelTextJ">
+              <PropertyRef Name="NovelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BanaSideProjectDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tAuthor" EntityType="Self.tAuthor" />
+          <EntitySet Name="tCategory" EntityType="Self.tCategory" />
+          <EntitySet Name="tNovel" EntityType="Self.tNovel" />
+          <EntitySet Name="tNovelTextC" EntityType="Self.tNovelTextC" />
+          <EntitySet Name="tNovelTextJ" EntityType="Self.tNovelTextJ" />
+          <AssociationSet Name="FK__tNovel__AuthorId__4E88ABD4" Association="Self.FK__tNovel__AuthorId__4E88ABD4">
+            <End Role="tAuthor" EntitySet="tAuthor" />
+            <End Role="tNovel" EntitySet="tNovel" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tNovel__Category__4D94879B" Association="Self.FK__tNovel__Category__4D94879B">
+            <End Role="tCategory" EntitySet="tCategory" />
+            <End Role="tNovel" EntitySet="tNovel" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tNovelTex__Novel__5165187F" Association="Self.FK__tNovelTex__Novel__5165187F">
+            <End Role="tNovel" EntitySet="tNovel" />
+            <End Role="tNovelTextC" EntitySet="tNovelTextC" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tNovelTex__Novel__5441852A" Association="Self.FK__tNovelTex__Novel__5441852A">
+            <End Role="tNovel" EntitySet="tNovel" />
+            <End Role="tNovelTextJ" EntitySet="tNovelTextJ" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BanaSideProjectDbModelStoreContainer" CdmEntityContainer="BanaSideProjectDbEntities">
+          <EntitySetMapping Name="tAuthor">
+            <EntityTypeMapping TypeName="BanaSideProjectDbModel.tAuthor">
+              <MappingFragment StoreEntitySet="tAuthor">
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tCategory">
+            <EntityTypeMapping TypeName="BanaSideProjectDbModel.tCategory">
+              <MappingFragment StoreEntitySet="tCategory">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tNovel">
+            <EntityTypeMapping TypeName="BanaSideProjectDbModel.tNovel">
+              <MappingFragment StoreEntitySet="tNovel">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="NovelId" ColumnName="NovelId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tNovelTextC">
+            <EntityTypeMapping TypeName="BanaSideProjectDbModel.tNovelTextC">
+              <MappingFragment StoreEntitySet="tNovelTextC">
+                <ScalarProperty Name="NovelTextId" ColumnName="NovelTextId" />
+                <ScalarProperty Name="NovelId" ColumnName="NovelId" />
+                <ScalarProperty Name="ChapterNum" ColumnName="ChapterNum" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tNovelTextJ">
+            <EntityTypeMapping TypeName="BanaSideProjectDbModel.tNovelTextJ">
+              <MappingFragment StoreEntitySet="tNovelTextJ">
+                <ScalarProperty Name="NovelTextId" ColumnName="NovelTextId" />
+                <ScalarProperty Name="NovelId" ColumnName="NovelId" />
+                <ScalarProperty Name="ReelNum" ColumnName="ReelNum" />
+                <ScalarProperty Name="ChapterNum" ColumnName="ChapterNum" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

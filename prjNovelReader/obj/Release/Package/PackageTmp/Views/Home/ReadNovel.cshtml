@@ -3,24 +3,39 @@
 @{
     ViewBag.Title = "章節列表";
 }
+<style>
+    .Area {
+        display: -webkit-flex;
+        display: flex;
+        margin:10px 0;
+    }
+        .Area a {
+            -webkit-flex: 1;
+            flex: 1;
+            margin: 0 20px;
+        }
 
+    @@media(min-width:768px)and (max-width:2200px) {
+        .Area{
+            max-width:400px;
+            padding-left:700px;
+
+        }
+    }
+    @@media(max-width:768px) {
+        h3 {
+            font-size: 16px;
+        }
+    }
+</style>
 <div>
-    <div style="font-size:24px;">
-        @Html.DisplayNameFor(model => model.NovelName) : @Model.NovelName
-    </div>
-    <div style="font-size:24px;">
-        @Html.DisplayNameFor(model => model.Category) : @Model.Category
-    </div>
-    <div class="row">
-        <div class="col-md-8"  style="font-size:24px;">
-            @Html.DisplayNameFor(model => model.Author) : @Model.Author
-        </div>
-        <div class="col-md-2">
-            @Html.ActionLink("編輯小說資訊", "Edit", "Novel", new { id = @Model.NovelId }, new {@class= "btn btn-default" })
-        </div>
-        <div class="col-md-2">
-            @Html.ActionLink("刪除整本小說", "Delete","Novel", new { id = @Model.NovelId}, new { @class = "btn btn-default" })
-        </div>
+    <h3>@Html.DisplayNameFor(model => model.NovelName) : <span>@Model.NovelName</span></h3>
+    <h3>@Html.DisplayNameFor(model => model.Category) : <span>@Model.Category</span></h3>
+    <h3>@Html.DisplayNameFor(model => model.Author) : <span>@Model.Author</span></h3>
+    <h3>@Html.DisplayNameFor(model => model.Type) : <span>@Model.Type</span></h3>
+    <div class="Area">
+            @Html.ActionLink("編輯小說資訊", "Edit", "Novel", new { id = @Model.NovelId }, new { @class = "btn btn-default" })
+            @Html.ActionLink("刪除整本小說", "Delete", "Novel", new { id = @Model.NovelId }, new { @class = "btn btn-default" })
     </div>
 </div>
 
@@ -33,17 +48,20 @@
         </th>
         <th></th>
     </tr>
-
-    @foreach (var item in Model.ChapterList)
+    @{ var count = 0;}
+    @foreach (var item in Model.ChapterNameList)
     {
+        
         <tr>
             <td class="col-md-8">
-                @Html.ActionLink("第 "+ @Html.DisplayFor(modelItem => item.ChapterNum)+" 章","ReadChapter",new {id=item.NovelTextId ,novelId = item.NovelId})
+                @Html.ActionLink(item, "ReadChapter", new { id = Model.ChapterIdList[count], novelType = Model.Type })
             </td>
             <td class="col-md-4">
-                @Html.ActionLink("刪除", "DeleteChapter", "Novel", new { id = item.NovelTextId, novelId = item.NovelId },"")
+                @Html.ActionLink("刪除", "DeleteChapter", "Novel", new { id = Model.ChapterIdList[count], novelId = Model.NovelId, novelType = Model.Type }, "")
             </td>
         </tr>
+        count++;
     }
+
 
 </table>

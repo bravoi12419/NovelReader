@@ -14,7 +14,8 @@ namespace prjNovelReader.Models.ViewModels
         public string Category { get; set; }
         [DisplayName("作者"), Required]
         public string Author { get; set; }
-
+        [DisplayName("來源"),Required]
+        public string Type { get; set; }
 
     }
 }

@@ -18,7 +18,7 @@ namespace prjNovelReader.Models.Repository
             set;
         }
         public GenericRepository()
-            : this(new dbNovelReaderEntities())
+            : this(new BanaSideProjectDbEntities())
         {
         }
 

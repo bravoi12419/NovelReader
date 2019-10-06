@@ -1,0 +1,410 @@
+﻿
+@{
+    ViewBag.Title = "CssAnimationTest";
+}
+<h2>CssAnimationTest</h2>
+<style>
+    .myBorder {
+        border-style: double;
+        border-width: medium;
+        border-color: black;
+    }
+
+    .left-nav {
+        position: fixed;
+        height: auto;
+        width: 100px;
+        padding: 0 10px 10px 10px;
+        top: 51px;
+        left: 0px;
+    }
+
+    .right-nav {
+        position: fixed;
+        width: auto;
+        height: auto;
+        max-height: 500px;
+        padding: 0 20px 20px 20px;
+        top: 200px;
+        right: 50px;
+    }
+
+        .right-nav .btn-group-vertical {
+            width: 100px;
+            margin: 0 auto;
+        }
+
+        .right-nav img {
+            width: 50px;
+            height: 50px;
+        }
+
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    #playe {
+        visibility: hidden;
+    }
+</style>
+<div class="">
+    <div class="left-nav myBorder">
+        <h3 class="text-center">音樂</h3>
+        <div id="player"></div>
+        <div class="btn-group-vertical" id="music">
+            <button value="-1" class="btn btn-info">隱藏</button>
+            <button value="0" class="btn btn-info">上一首</button>
+            <button value="1" class="btn btn-info">暫停</button>
+            <button value="2" class="btn btn-info">下一首</button>
+        </div>
+    </div>
+    <div class="right-nav myBorder">
+        <ul class="nav nav-pills nav-stacked">
+            <li id="fontSize">
+                <h3 class="text-center">大小</h3>
+                <div class="btn-group-vertical ">
+                    <button value="0" class="btn btn-info active">小</button>
+                    <button value="1" class="btn btn-info">中</button>
+                    <button value="2" class="btn btn-info">大</button>
+                </div>
+            </li>
+            <li id="fontFamily">
+                <h3 class="text-center">字形</h3>
+                <div class="btn-group-vertical">
+                    <button value="0" class="btn btn-warning active">新細明體</button>
+                    <button value="1" class="btn btn-warning">標楷體</button>
+                    <button value="2" class="btn btn-warning">微軟正黑體</button>
+                </div>
+            </li>
+            <li class="btn-group-vertical">
+                <h3 class="text-center">電梯</h3>
+                <div>
+                    @Html.TextBox("searchString", "", new { @class = "form-control text-center" })
+                </div>
+                <botton class="btn btn-default">前往章節</botton>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="chapterContent text-left" style="font-size:16px;font-family:PMingLiU;">
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;一些擁有特殊之人格魅力的人，即便身居高位，也不會被人敬而遠之。( 新飄天文學　tw.piaotian.cc )
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;陸明明顯就是這樣的人。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;走在路上，時不時就會有認出他的人走上前來與他說話，其中有疲憊不堪的冒險者，也有街邊販賣的男女老少。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;似乎在他們眼中，陸明仍然是以前那個無論做什麼事都充滿熱情的冒險者，而不是高高在上的神使。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;這些熱情而善良的人們，讓陸明的眼眶漸漸他想起了很多很多，有讓人感動的，有讓人羞慚的，也有人永生難忘。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“陸明！”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;在即將到達列車站之時，一名身著牧師服的女性從街角走出，竭力叫出了陸明的名字。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;這位女性三十來歲模樣，雖未顯老態，但臉上卻布滿風霜的痕跡。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;她是個曾經在教堂當過牧師的冒險者！
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“沐沐……”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;陸明也不禁叫出了她的名字，但明顯很尷尬，在逃避。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“怎麼，遇到老相好了？”羅文鬼使神差地接了一句，“挺漂亮的嗎？”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;听他如此說道，那邊的柳沐沐不由露出小女兒家的嬌羞，抬起眼皮看向陸明，哽咽著說了一句︰“你終于回來了！”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;……
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;現在，就算是瞎子也能看出來，兩人之間必有奸.情。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;看陸明愣在那里，羅文不由在背後推了他一把︰“男子漢大丈夫，該面對的就要面對。能珍惜的不珍惜，一旦失去，只會追悔莫及。難道你的體會還不夠深嗎？”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;雖然陸明在講自己的故事時，半點沒提到這沐沐，但羅文憑借自己“閱遍群芳”的“老辣”眼光，一眼就看出了問題所在。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;想來在陸明的故事里，這個沐沐也應該佔有一角。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;很可能，這個叫做沐沐的冒險者就是陸明以前的同伴之一，一直對陸明保持著愛慕之情。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;而陸明卻偏偏喜歡上了羅娜。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;沒準這沐沐和羅娜還是閨蜜……
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;總之，這一定是羅文最不喜歡的糾結故事。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;陸明被羅文從後推了一把，不由向前走了幾步，看上去就像是主動走向柳沐沐，後者顯然也是這麼理解的，當場就熱淚盈眶地撲了上來，緊緊抱住了陸明。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“花開堪折直須折，莫待無花空折枝。”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;羅文一臉過來人的模樣搖頭嘆息。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;然下一刻，他又想起了那坑爹的【人生之路】第三環任務，方覺自己才是困擾最大之人，不由心中戚戚然。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;但陸明卻猛地扣住柳沐沐的肩膀，將她推開一段距離後，沉聲道︰“對不起！”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“沒關系的。”柳沐沐露出溫婉順從的表情，“我會一直等下去，等到你不再說這句話的時候。”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;陸明默默地與她對視，他此刻正值心靈空虛之時，若對方再有一點進攻性，他很可能直接淪陷。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;然而從他第一次見到柳沐沐開始，她就一直是這般順從的個性，而這正是陸明最不喜歡的一點！
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;毫無驚喜、毫無變化的生活，是陸明所無法忍受的，他是一個真正的冒險者，最害怕的是一成不變。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;但歷經突變後的現在，陸明卻突然有種平平淡淡也是福的感覺，他出乎意料地沒有直言拒絕，而是對著柳沐沐柔聲道︰“等我，等我回來。”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;柳沐沐頓時面色一喜，這是她從來沒有想過的答復！
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;人這一生，往往要在喜歡自己的人和自己喜歡的人之間做出選擇，此刻的陸明顯然已經做出了選擇，無論他事後會不會後悔。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;與柳沐沐道別後，陸明義無反顧地走進了龍蚯列車站。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;他要去做個了結，問清楚凱撒一切的真相！
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;唯有如此，他才能擊破自己心中尚存的幻想。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;……
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;龍蚯列車站建在地底，從站口進入後還需經過一段相當長的地下甬道。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;在這甬道中人口來往非常密集，有運輸貨物的，也有出外冒險、回家探親的，舉不勝數。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;穿過甬道，進入站台，羅文才真正看到了停留在軌道上的龐大龍蚯！
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;第一眼，羅文幾乎將它誤認為是【地龍】，但顯然不是。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;兩者雖然都屬于蚯蚓類，但地龍更加龐大，龍蚯的總體長卻只有百來米，它周身釘著綠皮鐵甲，身體中有幾十處圓形開口，均勻排列，上面有透明的膠體薄膜，像是窗戶。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;透過窗戶，能看到龍蚯的內部，而能被稱之為列車，顯然這龍蚯的內部是中空的！
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“竟然是動物與植物的結合體！”海棠發出驚嘆。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;站台邊立著一個銅像，那是一個不算英偉的人像，人像前的銅碑上刻著這人的生平事跡。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“新冒險者公會第三代會長陸飛，于xxxx年從冒險之路中歸來，當時他乘坐的坐騎就是一條龍蚯！龍蚯是動物，也是植物，分裂繁殖，不需交配，在行進中能自主從土地中吸取能量，是奇跡般的交通工具！”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;在羅文等人大發驚嘆之時，陸明已經熟門熟路地買票回來。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“走吧，上車！”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;他習慣性地架起攝像工具，通過直播介紹著自己家鄉的驕傲。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;羅文等人便跟著他的腳步，圍著龍蚯列車看了一圈後，才將將從中段的車門上了車。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;他們的行為在不知內情的外人眼里非常怪異，不時會引來一些不認識陸明之人的惡視。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;羅文也注意到了那些人，他們匆匆搬運著一箱箱物資，一個個都神經敏感，倉皇四顧，像是生怕別人不知道自己箱中之物有問題一般……
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;一直生活在這種社會秩序下的人們，普遍都有一個問題，那就是不會偽裝。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;不是因為太過實誠，就是單純的不會偽裝，因為缺乏經驗。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“那些人，是反抗軍吧？”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“應該是吧。”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;面對羅文的問題，陸明隨口答道。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“你是神使吧？剿滅反抗軍，不應該是你的職責之一？”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“沒空。”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;陸明簡短地回答了一句，然後繼續擺弄著攝像頭，介紹著龍蚯列車內部的一些涂裝和工具的意義與用法。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;羅文不禁汗顏︰“那你什麼時候卸任呢？”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“嗯？卸任？”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“你不是要當專業的直播主持人嗎？”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“說的也是，現在想想，神使這個工作真不適合我。當時要不是出于繼承羅娜之位的想法，我也不會听凱撒的話去……”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;“你還真要改行啊？”
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;羅文無言以對。
+            <br />
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;(未完待續。)
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#music button').click((e) => {
+        let num = $(e.toElement).val()
+        switch (num) {
+            case '-1':
+                if ($('#player').css("width") !== "0px") {
+                    $('#player').animate({
+                        width: '0',
+                        height: '0',
+                    }, 500)
+                    $(e.toElement).text("展開")
+                } else {
+                    $('#player').animate({
+                        width: '320',
+                        height: '200',
+                    }, 1500)
+                    $(e.toElement).text("隱藏")
+                }
+                break;
+            case '0':
+                previousVideo()
+                break;
+            case '1':
+                console.log(player.getPlayerState())
+                if (player.getPlayerState() === 2) {
+                    playVideo()
+                    $(e.toElement).text("暫停")
+                } else {
+                    pauseVideo()
+                    $(e.toElement).text("播放")
+                }
+                break;
+            case '2':
+                nextVideo()
+                break;
+        }
+    })
+    $('#fontSize button').click((e) => {
+        $('#fontSize button').removeClass('active')
+        $(e.toElement).addClass('active')
+        let num = $(e.toElement).val()
+        switch (num) {
+            case '0':
+                $('.chapterContent').css('font-size', '16px')
+                break;
+            case '1':
+                $('.chapterContent').css('font-size', '24px')
+                break;
+            case '2':
+                $('.chapterContent').css('font-size', '32px')
+                break;
+        }
+    })
+    $('#fontFamily button').click((e) => {
+        $('#fontFamily button').removeClass('active')
+        $(e.toElement).addClass('active')
+        let num = $(e.toElement).val()
+        switch (num) {
+            case '0':
+                $('.chapterContent').css('font-family', 'PMingLiU')
+                break;
+            case '1':
+                $('.chapterContent').css('font-family', 'DFKai-sb')
+                break;
+            case '2':
+                $('.chapterContent').css('font-family', 'Microsoft JhengHei')
+                break;
+        }
+    })
+
+    // youtubeAPI
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    let player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '200',
+            width: '320',
+            autoplay: 1,
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+    function onPlayerReady(event) {
+        player.loadPlaylist({
+            playlist: "test",
+            list: "RDxoH29SM3e8I",
+            index: 0,
+            startSeconds: 0,
+            suggestedQuality: "small"
+        });
+    }
+    function onPlayerStateChange(event) {
+    }
+    function playVideo() {
+        player.playVideo();
+    }
+    function pauseVideo() {
+        player.pauseVideo();
+    }
+    function nextVideo() {
+        player.nextVideo();
+    }
+    function previousVideo() {
+        player.previousVideo();
+    }
+</script>

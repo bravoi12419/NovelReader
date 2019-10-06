@@ -17,7 +17,8 @@ namespace prjNovelReader.Models.Service
         private IRepository<tCategory> categoryRepository = new GenericRepository<tCategory>();
         private IRepository<tNovel> novelRepository = new GenericRepository<tNovel>();
         private IRepository<tNovelTextC> textCRepository = new GenericRepository<tNovelTextC>();
-        private int pageSize = 3;
+        private IRepository<tNovelTextJ> textJRepository = new GenericRepository<tNovelTextJ>();
+        private int pageSize = 5;
         public string GetDropdownList(string name, IDictionary<string, string> optionData, object htmlAttributes, string defaultSelectValue, bool appendOptionLabel, string optionLabel)
         {
             //name=tag內名稱  optionData=選單選項 htmlAttributes=額外增加的html defaultSelectValue=默認選擇選項(selected) appendOptionLabel=是否額外加上選項(全部) optionLabel=額外選項字串
@@ -95,7 +96,8 @@ namespace prjNovelReader.Models.Service
                     Id = item.NovelId,
                     NovelName = item.Name,
                     Author = item.tAuthor.Name,
-                    Category = item.tCategory.Name
+                    Category = item.tCategory.Name,
+                    Type = item.Type
                 };
                 indexVMs.Add(IndexVM);
             }
@@ -111,23 +113,59 @@ namespace prjNovelReader.Models.Service
                 NovelName = novel.Name,
                 Category = novel.tCategory.Name,
                 Author = novel.tAuthor.Name,
-                ChapterList = textCRepository.GetSome(m => m.NovelId == novelId).ToList()
+                Type = novel.Type,
+                ChapterIdList = new List<int>(),
+                ChapterNameList = new List<string>()
             };
+            if( novel.Type.Replace(" ","") == "日輕")
+            {
+                var list = textJRepository.GetSome(m => m.NovelId == novelId).ToList();
+                foreach (var item in list)
+                {
+                    showChapterViewModel.ChapterIdList.Add(item.NovelTextId);
+                    showChapterViewModel.ChapterNameList.Add($"第{item.ReelNum}卷-第{item.ChapterNum}章");
+                }
+            }
+            else
+            {
+                var list = textCRepository.GetSome(m => m.NovelId == novelId).ToList();
+                foreach (var item in list)
+                {
+                    showChapterViewModel.ChapterIdList.Add(item.NovelTextId);
+                    showChapterViewModel.ChapterNameList.Add($"第{item.ChapterNum}章");
+                }
+            }
             return showChapterViewModel;
         }
 
-        public ReadChapterViewModel ReadChapter(int chapterId)
+        public ReadChapterViewModel ReadChapter(int chapterId,string type)
         {
-            var chapter = textCRepository.Get(m => m.NovelTextId == chapterId);
-            var readChapterVM = new ReadChapterViewModel() {
-                Id = chapter.NovelTextId,
-                NovelId = chapter.NovelId,
-                ChapterId = chapter.ChapterNum,
-                ChapterText = chapter.Text,
-                NovelName= chapter.tNovel.Name
-             
-            };
-            return readChapterVM;
+            if (type.Replace(" ","") == "日輕")
+            {
+                var chapter = textJRepository.Get(m => m.NovelTextId == chapterId);
+                var readChapterVM = new ReadChapterViewModel()
+                {
+                    Id = chapter.NovelTextId,
+                    NovelId = chapter.NovelId,
+                    ChapterId = chapter.ChapterNum,
+                    ChapterText = chapter.Text,
+                    NovelName = chapter.tNovel.Name
+                };
+                return readChapterVM;
+            }
+            else
+            {
+                var chapter = textCRepository.Get(m => m.NovelTextId == chapterId);
+                var readChapterVM = new ReadChapterViewModel()
+                {
+                    Id = chapter.NovelTextId,
+                    NovelId = chapter.NovelId,
+                    ChapterId = chapter.ChapterNum,
+                    ChapterText = chapter.Text,
+                    NovelName = chapter.tNovel.Name
+                };
+                return readChapterVM;
+            }
         }
     }
 }

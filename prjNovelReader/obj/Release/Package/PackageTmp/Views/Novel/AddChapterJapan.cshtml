@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "新增章節-文庫";
+}
+
+<h2>請輸入小說章節目錄的網址</h2> <p>範例:https://www.wenku8.net/novel/2/2428/90211.htm</p>
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            @Html.Label("書名 : ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("novelName", ViewBag.newNovelName as string, new { @class = "form-control", required = "required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("作者 : ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("novelAuthor", ViewBag.newNovelAuthor as string, new { @class = "form-control", required = "required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("網址 : ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("url", new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="新增" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+
+}
+

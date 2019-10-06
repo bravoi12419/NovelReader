@@ -13,9 +13,10 @@ namespace prjNovelReader.Models.Service.Interface
         void Update(int id,NovelViewModel novel);
         void Delete(int id);
         void CreateChapter(string tid, int numberOfPage,int novelId);
+        void CreateChapterWenKu(string url, int novelId);
         void UpdateChapter(int id, ChapterViewModel chapter);
-        void DeleteChapter(int id);
+        void DeleteChapter(int id,string type);
         NovelViewModel ShowNovel(int id);
-        ChapterViewModel ShowChapter(int id);
+        ChapterViewModel ShowChapter(int id,string Type);
     }
 }

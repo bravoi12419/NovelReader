@@ -9,8 +9,8 @@ namespace prjNovelReader.Models.ViewModels
 {
     public class ChapterViewModel
     {
-        [DisplayName("章節編號"), Required]
-        public string ChapterNumber { get; set; }
+        [DisplayName("章節"), Required]
+        public string ChapterName { get; set; }
         [DisplayName("書名"), Required]
         public string NovelName { get; set; }
         [DisplayName("內容"), Required]

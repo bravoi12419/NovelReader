@@ -1,0 +1,27 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Test</title>
+</head>
+<body>
+    <div>@{
+       
+        foreach (var item in ViewBag.data)
+        {
+
+            <p>@item</p>
+
+        }
+
+     }
+
+    </div>
+</body>
+</html>

@@ -3,45 +3,340 @@
     ViewBag.Title = Model.NovelName;
 }
 <h2>@Model.NovelName</h2>
-@using (Html.BeginForm("ReadChapter", "Home", new { }, 0, new { @class = "row" }))
-{
-    <div>
-        <div class="col-md-2">
-            @Html.Label("選擇字形 : ")
-            @Html.Raw(ViewData["glyphDList"])
-        </div>
-        <div class="col-md-2">
-            @Html.Label("選擇大小 : ")
-            @Html.Raw(ViewData["sizeDList"])
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-2"></div>
-        <div class="col-md-2"></div>
-        <div style="" class="col-md-2">
-            @Html.Label(" ")
-            <input type="submit" class="btn btn-default form-control" value="調整" />
-        </div>
-    </div>
-}
+<style>
+    .myBorder {
+        border-style: double;
+        border-width: medium;
+        border-color: black;
+    }
+    .left-nav {
+        position: fixed;
+        height: auto;
+        width: auto;
+        max-width:120px;
+        padding: 0 10px 10px 10px;
+        z-index: 4;
+    }
+    .left-nav .btn-group-vertical {
+        width: 100px;
+        margin: 0 auto;
+    }
+    .chapterContent {
+        max-width: 1000px;
+        margin: 100px 0;
+    }
+    .right-nav {
+        position: fixed;
+        width: auto;
+        padding: 0 20px 20px 20px;
+        height: auto;
+        max-height: 500px;
+        z-index: 3;
+    }
+        .right-nav .btn-group-vertical {
+            width: 100px;
+            margin: 0 auto;
+        }
+    .footer-nav {
+        position: fixed;
+        background-color: pink;
+        display: flex;
+        width: 100%;
+        left: 0;
+        bottom: 0px;
+        padding: 5px 10px;
+    }
+        .footer-nav button {
+            -webkit-flex: 1;
+            flex: 1;
+            margin: 0 10px;
+        }
+    #changePage {
+        display: -webkit-flex;
+        display: flex;
+    }
+       #changePage button, a {
+            -webkit-flex: 1;
+            flex: 1;
+            margin: 0 20px;
+        }
 
-<div style="font-size:@ViewBag.size font-family:@ViewBag.glyph width:800px">
-    @Html.Raw(Model.ChapterText)
+    @@media(min-width: 769px) and (max-width:2200px) {
+        .right-nav {
+            top: 200px;
+            right: 100px;
+        }
+        .left-nav {
+            top: 200px;
+            left: 0px;
+        }
+        .footer-nav {
+            display:none;
+        }
+    }
+        @@media(max-width:768px) {
+            .right-nav {
+                border-radius: 30px;
+                background-color: aquamarine;
+                display: none;
+                right: 40px;
+                bottom: 50px;
+            }
+            .left-nav {
+                border-radius: 30px;
+                background-color: none;
+                left: 40px;
+                bottom: 50px;
+            }
+                .left-nav h3, #music {
+                    display: none;
+                }
+                .left-nav #player{
+                    width:0;
+                    height:0;
+                }
+        }
+</style>
+<div class="left-nav">
+    <h3 class="text-center">音樂</h3>
+    <div class="btn-group-vertical" id="music">
+        <button value="-1" class="btn btn-info">展開</button>
+        <button value="0" class="btn btn-info">上一首</button>
+        <button value="1" class="btn btn-info">播放</button>
+        <button value="2" class="btn btn-info">下一首</button>
+        <button value="3" class="btn btn-info">更換歌單</button>
+    </div>
+    <p> </p>
+    <div id="changeList">
+        <input type="text" placeholder="請填入歌單的list代碼" />
+        <button class="btn btn-info">確定</button>
+    </div>
+    <div id="player"></div>
+
+
 </div>
 
-<div class="row">
-    <div class="left col-md-4">
+<div class="right-nav">
+    <ul class="nav nav-pills nav-stacked">
+        <li id="fontSize">
+            <h3 class="text-center">大小</h3>
+            <div class="btn-group-vertical ">
+                <button value="0" class="btn btn-info">小</button>
+                <button value="1" class="btn btn-info">中</button>
+                <button value="2" class="btn btn-info">大</button>
+            </div>
+        </li>
+        <li id="fontFamily">
+            <h3 class="text-center">字形</h3>
+            <div class="btn-group-vertical">
+                <button value="0" class="btn btn-info">新細明體</button>
+                <button value="1" class="btn btn-info">標楷體</button>
+                <button value="2" class="btn btn-info">微軟正黑體</button>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="chapterContent text-left" style="">
+    @ViewData["novelType"]
+    @Html.Raw(Model.ChapterText)
+
+</div>
+
+<div id="changePage">
         @{
             if (Model.ChapterId != 1)
             {
-                @Html.ActionLink("上一章", "ReadChapter", new { id = ViewData["PreviousId"], glyph = ViewData["currentGlyph"], size = ViewData["currentSize"] })
+                <button class="btn btn-default" id="previousPage">上一章</button>
             }
         }
-    </div>
-    <div class=" col-md-4">
-        @ViewData["NovelId"]
-        @Html.ActionLink("返回章節列表", "ReadNovel", new { novelId = Model.NovelId })
-    </div>
-    <div class="right col-md-4">
-        @Html.ActionLink("下一章", "ReadChapter", new { id = ViewData["NextId"], glyph = ViewData["currentGlyph"], size = ViewData["currentSize"] })
-    </div>
+        @Html.ActionLink("返回章節列表", "ReadNovel", new { novelId = Model.NovelId }, new { @class = "btn  btn-default" })
+        <button class="btn btn-default" id="nextPage">下一章</button>
 </div>
+
+<div class="footer-nav">
+    <button class="btn btn-info">音樂</button>
+    <button class="btn btn-info">字形</button>
+</div>
+<script>
+    $(() => {
+        let size = "@ViewData["currentSize"]"
+        let glyph = "@ViewData["currentGlyph"]"
+        $('#fontSize button').each(function (i, item) {
+            if ($(item).val() === size) {
+                $(item).addClass('active')
+            }
+            $(item).click((e) => {
+                $('#fontSize .active').removeClass('active')
+                $(e.toElement).addClass('active')
+                let num = $(e.toElement).val()
+                changeSize(num)
+            })
+        })
+        $('#fontFamily button').each(function (i, item) {
+            if ($(item).val() === glyph) {
+                $(item).addClass('active')
+            }
+            $(item).click((e) => {
+                $('#fontFamily .active').removeClass('active')
+                $(e.toElement).addClass('active')
+                let num = $(e.toElement).val()
+                changeFamily(num)
+            })
+        })
+        changeSize(size)
+        changeFamily(glyph)
+        $('#changeList').hide();
+        $('#changeList button').click((e) => {
+            changePlaylist($('#changeList input').val())
+            $('#changeList').hide();
+        })
+
+        $('.footer-nav').click((e) => {
+            if ($(e.toElement).text() === "音樂") {
+                $('.left-nav h3,#music').slideToggle("slow");
+                if ($('.left-nav').css('background-color') == "rgba(0, 0, 0, 0)") {
+                    $('.left-nav').css("background-color","aquamarine")
+                } else {
+                    setTimeout(() => { $('.left-nav').css("background-color", "rgba(0, 0, 0, 0)") }, 500);               
+                }
+            } else {
+                $('.right-nav').slideToggle("slow");
+            }
+        })
+    })
+    function changeSize(num) {
+        switch (num) {
+            case '0':
+                $('.chapterContent').css('font-size', '16px')
+                break;
+            case '1':
+                $('.chapterContent').css('font-size', '24px')
+                break;
+            case '2':
+                $('.chapterContent').css('font-size', '32px')
+                break;
+        }
+    }
+    function changeFamily(num) {
+        switch (num) {
+            case '0':
+                $('.chapterContent').css('font-family', 'PMingLiU')
+                break;
+            case '1':
+                $('.chapterContent').css('font-family', 'DFKai-sb')
+                break;
+            case '2':
+                $('.chapterContent').css('font-family', 'Microsoft JhengHei')
+                break;
+        }
+    }
+    $('#nextPage').click(() => {
+        let id = "@ViewData["NextId"]"
+        let type = "@ViewData["novelType"]"
+        ReadChapter(id,type)
+    })
+    $('#previousPage').click(() => {
+        let id = "@ViewData["PreviousId"]"
+        let type = "@ViewData["novelType"]"
+        ReadChapter(id,type)
+    })
+    function ReadChapter(id, type) {
+        let size = $('#fontSize .active').val()
+        let family = $('#fontFamily .active').val()
+        let url = `/Home/ReadChapter?id=${id}&glyph=${family}&size=${size}&novelType=${type}`
+        window.location = url
+    }
+    $('#music button').click((e) => {
+        let num = $(e.toElement).val()
+        switch (num) {
+            case '-1':
+                if ($('#player').css("width") !== "0px") {
+                    $('#player').animate({
+                        width: '0',
+                        height: '0',
+                    }, 500)
+                    $(e.toElement).text("展開")
+                } else {
+                    $('#player').animate({
+                        width: '320',
+                        height: '200',
+                    }, 1000)
+                    $(e.toElement).text("隱藏")
+                }
+                break;
+            case '0':
+                previousVideo()
+                break;
+            case '1':
+                if (player.getPlayerState() === 2 || player.getPlayerState() ===5) {
+                    playVideo()
+                } else {
+                    pauseVideo()
+                }
+                break;
+            case '2':
+                nextVideo()
+                break;
+            case '3':
+                $('#changeList').toggle();
+                break;
+        }
+    })
+
+
+
+    // youtubeAPI
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    let player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '0',
+            width: '0',
+            autoplay: 1,
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+    function onPlayerReady(event) {
+        player.cuePlaylist({
+            playlist: "test",
+            list: "RDxoH29SM3e8I",
+            index: 0,
+            startSeconds: 0,
+            suggestedQuality: "small"
+        });
+        //pauseVideo();
+    }
+    function onPlayerStateChange(event) {
+        console.log(event.data)
+        if (event.data === 1) $('#music button:eq(2)').text("暫停")
+        if (event.data === 2) $('#music button:eq(2)').text("播放")
+    }
+    function playVideo() {
+        player.playVideo();
+    }
+    function pauseVideo() {
+        player.pauseVideo();
+    }
+    function nextVideo() {
+        player.nextVideo();
+    }
+    function previousVideo() {
+        player.previousVideo();
+    }
+    function changePlaylist(list) {
+        player.loadPlaylist({
+            playlist: "test",
+            list: list,
+            index: 0,
+            startSeconds: 0,
+            suggestedQuality: "small"
+        });
+    }
+</script>

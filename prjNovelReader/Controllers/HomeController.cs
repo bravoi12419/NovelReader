@@ -33,18 +33,18 @@ namespace prjNovelReader.Controllers
 
         public ActionResult ReadNovel(int novelId)
         {
-
             return View(homeService.ShowChapterC(novelId));
         }
 
-        public ActionResult ReadChapter(int id,int glyph=0, int size=0)
+        public ActionResult ReadChapter(int id,string novelType, int glyph=0, int size=0)
         {
             ViewData["Id"] = id;
             ViewData["PreviousId"] = (id-1);
             ViewData["NextId"] = (id+1);
             ViewData["currentGlyph"] = glyph;
             ViewData["currentSize"] = size;
-            return View(homeService.ReadChapter(id));
+            ViewData["novelType"] = novelType;
+            return View(homeService.ReadChapter(id, novelType));
         }
 
 

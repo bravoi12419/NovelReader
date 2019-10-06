@@ -53,9 +53,18 @@ namespace prjNovelReader.Controllers
             return RedirectToAction("ReadNovel", "Home", new { novelId });
         }
 
-        public ActionResult AddChapterJapan()
+        public ActionResult AddChapterJapan(string newNovelName, string newNovelAuthor)
         {
+            ViewBag.newNovelName = newNovelName;
+            ViewBag.newNovelAuthor = newNovelAuthor;
             return View();
+        }
+        [HttpPost]
+        public ActionResult AddChapterJapan(string url, string novelName, string novelAuthor)
+        {
+            var novelId = novelService.GetNovelId(novelName, novelAuthor);
+            novelService.CreateChapterWenKu(url, novelId);
+            return RedirectToAction("ReadNovel", "Home", new { novelId });
         }
         public ActionResult Edit(int id)
         {
@@ -71,8 +80,8 @@ namespace prjNovelReader.Controllers
         public ActionResult EditChapter(int id)
         {
             ViewBag.ChapterId = id;
-
-            return View(novelService.ShowChapter(id));
+            string type = "日"; 
+            return View(novelService.ShowChapter(id,type));
         }
         [HttpPost]
         public ActionResult EditChapter(int id,ChapterViewModel chapter)
@@ -85,9 +94,9 @@ namespace prjNovelReader.Controllers
             novelService.Delete(id);
             return RedirectToAction("index", "Home");
         }
-        public ActionResult DeleteChapter(int id,int novelId)
+        public ActionResult DeleteChapter(int id,int novelId,string novelType)
         {
-            novelService.DeleteChapter(id);
+            novelService.DeleteChapter(id, novelType);
             return RedirectToAction("ReadNovel", "Home",new { novelId = novelId });
         }
 

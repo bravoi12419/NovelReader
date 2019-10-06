@@ -16,10 +16,10 @@
         @Html.HiddenFor(model => model.NovelName)
         <input type="hidden" name="id" value="@ViewBag.ChapterId">
         <div class="form-group">
-            @Html.LabelFor(model => model.ChapterNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ChapterName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ChapterNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ChapterNumber, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ChapterName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ChapterName, "", new { @class = "text-danger" })
             </div>
         </div>
 

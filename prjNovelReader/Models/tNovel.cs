@@ -25,6 +25,7 @@ namespace prjNovelReader.Models
         public string Name { get; set; }
         public Nullable<int> CategoryId { get; set; }
         public Nullable<int> AuthorId { get; set; }
+        public string Type { get; set; }
     
         public virtual tAuthor tAuthor { get; set; }
         public virtual tCategory tCategory { get; set; }

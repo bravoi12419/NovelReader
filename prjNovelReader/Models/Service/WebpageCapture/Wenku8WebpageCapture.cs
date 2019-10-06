@@ -19,14 +19,18 @@ namespace WebpageCapture
 
         public override void HtmlCapture(string webHtml)
         {
-            string str = ToTraditional(webHtml);
-            str = Regex.Replace(str, "(<!D).+?(<div id=\"contentmain)", "<"); //文庫去頭
-            str = Regex.Replace(str, "(</ul></div>).+?(html>)", "</ul>");   //文庫去尾
-            str = Regex.Replace(str, "&nbsp;", " ");
-            str = Regex.Replace(str, "<br />", "\n");
-            str = Regex.Replace(str, "(<ul).+?(</ul>)", string.Empty); //細切
-            str = Regex.Replace(str, "<.+?>", " "); //去除其餘tag
-            NovelText.Add(str);
+                var text = ToTraditional(webHtml);
+                text = Regex.Replace(text, "(<!D).+?(<div id=\"contentmain)", "<"); //文庫去頭
+                text = Regex.Replace(text, "(</ul></div>).+?(html>)", "</ul>");   //文庫去尾
+                text = Regex.Replace(text, "&nbsp;", "-空白-");
+                text = Regex.Replace(text, "<ul id=\"contentdp\">", "-換行-");
+                text = Regex.Replace(text, "<br />", "-換行-");
+                text = Regex.Replace(text, "(<ul).+?(</ul>)", string.Empty); //細切
+                text = Regex.Replace(text, "<.+?>", " "); //去除其餘tag
+                text = Regex.Replace(text,"-空白-", "&nbsp;");
+                text = Regex.Replace(text, "-換行-", "<br />");
+            NovelText.Add(text);
+            
         }
     }
 }

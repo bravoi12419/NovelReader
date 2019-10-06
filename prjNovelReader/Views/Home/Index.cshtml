@@ -2,29 +2,74 @@
 @{
     ViewBag.Title = "書庫";
 }
+<style>
+
+    @@media(min-width: 769px) and (max-width:2200px) {
+        .searchArea {
+            display: -webkit-flex;
+            display: flex;
+        }
+
+            .searchArea .searchString, .searchCategory {
+                -webkit-flex: initial;
+                flex: initial;
+                width: 200px;
+                min-width: 100px;
+                margin: 0 30px
+            }
+
+            .searchArea .searchStart, #resetBtn {
+                -webkit-flex: initial;
+                flex: initial;
+                width: 200px;
+                min-width: 100px;
+                height: 34px;
+                margin: 24px 30px 0 30px;
+            }
+    }
+
+    @@media(max-width:768px) {
+        .searchString, .searchCategory,.searchArea_2 {
+            display: -webkit-flex;
+            display: flex;
+            margin:10px 0;
+        }
+
+            .searchString label, input {
+                -webkit-flex: 1;
+                flex: 1;
+                margin: 0 20px;
+            }
+            .searchCategory label, select {
+                -webkit-flex: 1;
+                flex: 1;
+                margin: 0 20px;
+            }
+        .searchArea_2 div, input {
+            -webkit-flex: 1;
+            flex: 1;
+            margin:0 20px;
+        }
+    }
+</style>
 <h2>書庫</h2>
 
 <div class="container body-content">
-    @using (Html.BeginForm("index", "Home", 0, new { @class = "row" }))
+    @using (Html.BeginForm("index", "Home", 0, new { @class = "searchArea" }))
     {
-        <div class="col-sm-3">
+        <div class="searchString">
             @Html.Label("依名稱搜尋 : ")
             @Html.TextBox("searchString", ViewBag.searchString as string, new { @class = "form-control" })
         </div>
-        <div class="col-sm-3">
+        <div class="searchCategory">
             @Html.Label("依種類搜尋 : ")
             @Html.Raw(ViewBag.categoryDList)
         </div>
-        <div class="col-sm-3" style="height:59px;">
-            <div style="position:absolute; top:25px; left:100px">
-                <input type="submit" class="btn btn-default form-control" value="開始搜尋" />
-            </div>
+        <div class="searchArea_2">
+            <input type="submit" class="btn btn-default searchStart" value="開始搜尋" />
+            <div class="btn btn-default" id="resetBtn">清除篩選</div>
         </div>
-        <div class="col-sm-3" style="height:59px;">
-            <div style="position:absolute; top:25px;">
-                <div class="btn btn-default" id="resetBtn">清除篩選</div>
-            </div>
-        </div>
+
     }
     <div id="OrderData">
         Loading...
@@ -76,8 +121,10 @@
                         }
                     })
                 } else {
-                    if ($(item).parent('li').attr('class') !== "active")
-                        $(item).parent('li').html('<div style="display:none;"></div>')
+                    if ($(item).parent('li').attr('class') !== "active") {
+                        $(item).parent('li').css("visibility","hidden")
+                    }
+
                 }
             })
         }

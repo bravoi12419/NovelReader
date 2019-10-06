@@ -1,0 +1,115 @@
+﻿@model IPagedList<prjNovelReader.Models.ViewModels.IndexViewModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <title>AjaxPageListTest</title>
+</head>
+<body>
+    @ViewBag.page
+    @ViewBag.categoryId
+    <div class="container body-content">
+        @using (Html.BeginForm("AjaxPageListTest", "Test", 0, new { @class = "row" }))
+        {
+            <div class="col-sm-4">
+                @Html.Label("依名稱搜尋 : ")
+                @Html.TextBox("searchString", ViewBag.searchString as string, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-4">
+                @Html.Label("依種類搜尋 : ")
+                @Html.Raw(ViewBag.categoryDList)
+            </div>
+            <div class="col-sm-4" style="height:59px; position:absolute; right:20px;">
+                    <div style="position:absolute; top:20px; right:20px;">
+                        <input type="submit" class="btn btn-default form-control" value="開始搜尋" />
+                    </div>
+            </div>
+        }
+        <div id="OrderData">
+            Loading...
+        </div>
+        </div>
+
+    <script>
+        
+        $('#categoryId').change(function (e) {
+            console.log($('#searchString').val())
+            console.log($('#categoryId').val())
+            let url = '/Test/AjaxPageListTest'
+            window.location = url + `?categoryId=${$('#categoryId').val()}&searchString=${$('#searchString').val()}`
+
+            //window.location = '/Test/AjaxPageListTest?categoryId=' + $('#categoryId').val();
+        })
+        $(() => {
+            console.log("執行!");
+            let page = @ViewBag.page;
+            fetchPage(page);
+            console.log("測試非同步");
+        })
+        function fetchPage(page) {
+            console.log("開始請求")
+            $('#OrderData').html('<div id="OrderData">Loading...</div>')
+            let pagePartialUrl = '@Url.Action("PagedPartial", "Test")';
+            let testUrl = '/Test/PagedPartial';
+
+            let search;
+            $.ajax({
+                url:testUrl,
+                data: { page: page, categoryId: @ViewBag.categoryId , searchString: $('#searchString').val()},
+                type: 'GET',
+                success: data => {
+                    setTimeout(() => {
+                        console.log("完成!")
+                        getPagedList(data)
+                    }, 0)
+                },
+                error: () => { console.log("失敗")}
+            })
+            //$.get(pagePartialUrl, { page: page }, getPagedList (data))
+        };
+
+        function getPagedList(data) {
+            $('#OrderData').html(data)
+            $('#OrderData .pagination li a').each(function (i, item) {
+                let hyperLinkUrl = $(item).attr('href')
+                if (typeof hyperLinkUrl !== 'undefined' && hyperLinkUrl !== false) {
+
+                    console.log($(item).attr('href'))
+                    let pageNumber = $(item).attr('href').replace('/Test/AjaxPageListTest?page=', '')
+                    $(item).attr('href', '?page=' + pageNumber).click(function (event) {
+                        event.preventDefault();
+                        //$(event.target).attr('href');
+                        let url = '/Test/AjaxPageListTest' + $(item).attr('href');
+                        let newTitle = "TEST";
+                        fetchPage(pageNumber);
+                        if (history.pushState) {
+                            let state = ({
+                                page: pageNumber, title: newTitle
+                            })
+                            window.history.pushState(state, newTitle, url);
+                        }
+                    })
+                } else {
+                    if ($(item).parent('li').attr('class') !== "active")
+                        $(item).parent('li').html('<div style="display:none;"></div>')
+                }
+            })
+        }
+
+        window.addEventListener('popstate', function (e) {
+            if (e.state === null) fetchPage(1);
+            else {
+                fetchPage(e.state.page);
+            }
+        },false)
+    </script>
+</body>
+</html>

@@ -16,7 +16,11 @@ namespace prjNovelReader.Models.ViewModels
         public string Category { get; set; }
         [DisplayName("作者")]
         public string Author { get; set; }
-        [DisplayName("章節列表")]
-        public List<tNovelTextC> ChapterList { get; set; }
+        [DisplayName("來源")]
+        public string Type { get; set; }
+        [DisplayName("章節名稱")]
+        public List<string> ChapterNameList { get; set; }
+        public List<int> ChapterIdList { get; set; }
+
     }
 }

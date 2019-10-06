@@ -10,6 +10,7 @@ using prjNovelReader.Models.Repository;
 using prjNovelReader.Models.Repository.Interface;
 using prjNovelReader.Models.Service;
 using WebpageCapture;
+using System.Text.RegularExpressions;
 
 namespace prjNovelReader.Models.Service
 {
@@ -19,6 +20,7 @@ namespace prjNovelReader.Models.Service
         private IRepository<tCategory> categoryRepository = new GenericRepository<tCategory>();
         private IRepository<tAuthor> authorRepository = new GenericRepository<tAuthor>();
         private IRepository<tNovelTextC> textCRepository = new GenericRepository<tNovelTextC>();
+        private IRepository<tNovelTextJ> textJRepository = new GenericRepository<tNovelTextJ>();
         private tNovel tNovel = new tNovel();
         public int GetNovelId(string novelName, string novelAuthor)
         {
@@ -64,6 +66,7 @@ namespace prjNovelReader.Models.Service
         public void Create(NovelViewModel novel)
         {
             tNovel.Name = novel.Name;
+            tNovel.Type = novel.Type.Replace(" ","");
             CheckAuthor(novel.Author);
             var tNovelCheck = novelRepository.Get(m=>m.Name == novel.Name && m.AuthorId == tNovel.AuthorId);
             if (tNovelCheck  == null)
@@ -98,23 +101,43 @@ namespace prjNovelReader.Models.Service
 
         public void Delete(int id)
         {
-            List<tNovelTextC> chapterList = textCRepository.GetSome(m => m.NovelId == id).ToList();
-            foreach(var item in chapterList)
+            tNovel novel = novelRepository.Get(m => m.NovelId == id);
+            if (novel.Type.Replace(" ","") == "日輕")
             {
-                DeleteChapter(item.NovelTextId);
+                List<tNovelTextJ> chapterList = textJRepository.GetSome(m => m.NovelId == id).ToList();
+                foreach (var item in chapterList)
+                {
+                    DeleteChapter(item.NovelTextId, novel.Type);
+                }
             }
-            novelRepository.Delete(novelRepository.Get(m => m.NovelId == id));
+            else
+            {
+                List<tNovelTextC> chapterList = textCRepository.GetSome(m => m.NovelId == id).ToList();
+                foreach (var item in chapterList)
+                {
+                    DeleteChapter(item.NovelTextId, novel.Type);
+                }
+            }
+            novelRepository.Delete(novel);
         }
 
-        public void DeleteChapter(int id)
+        public void DeleteChapter(int id,string type)
         {
-            textCRepository.Delete(textCRepository.Get(m => m.NovelTextId == id));
+            if (type.Replace(" ", "") == "日輕")
+            {
+                textJRepository.Delete(textJRepository.Get(m => m.NovelTextId == id));
+            }
+            else
+            {
+                textCRepository.Delete(textCRepository.Get(m => m.NovelTextId == id));
+            }
         }
 
         public void Update(int id,NovelViewModel novel)
         {
             tNovel = novelRepository.Get(m => m.NovelId == id);
             tNovel.Name = novel.Name;
+            tNovel.Type = novel.Type;
             CheckAuthor(novel.Author);
             CheckCategory(novel.Category);
             novelRepository.Update(tNovel);
@@ -125,7 +148,7 @@ namespace prjNovelReader.Models.Service
         public void UpdateChapter(int id, ChapterViewModel chapter)
         {
             var text = textCRepository.Get(m => m.NovelTextId == id);
-            text.ChapterNum = int.Parse(chapter.ChapterNumber);
+            text.ChapterNum = int.Parse(chapter.ChapterName);
             text.Text = chapter.Text;
             textCRepository.Update(text);
         }
@@ -137,22 +160,60 @@ namespace prjNovelReader.Models.Service
             {
                 Name = novel.Name,
                 Category = novel.tCategory.Name,
-                Author = novel.tAuthor.Name
+                Author = novel.tAuthor.Name,
+                Type = novel.Type
             };
             return novelData;
         }
 
-        public ChapterViewModel ShowChapter(int id)
+        public ChapterViewModel ShowChapter(int id,string Type)
         {
             var chapter = textCRepository.Get(m => m.NovelTextId == id);
 
             var chapterData = new ChapterViewModel()
             {
-                ChapterNumber = chapter.ChapterNum.ToString(),
+                ChapterName = chapter.ChapterNum.ToString(),
                 NovelName = chapter.tNovel.Name,
                 Text = chapter.Text
             };
             return chapterData;
+        }
+
+        public void CreateChapterWenKu(string url,int novelId)
+        {
+            Wenku8WebpageCapture pageCapture = new Wenku8WebpageCapture();
+            int reelCount = 1;
+            int chapterCount = 1;
+            int captureCount = 0;
+            var tNovelTextJ = new tNovelTextJ();
+            tNovelTextJ.NovelId = novelId;
+            pageCapture.GetHtml(url);
+            string str = pageCapture.HtmlText;
+            var links = new List<string>();
+            url = url.Replace("index.htm", "");
+            str = Regex.Replace(str, "(<!D).+?(<table)", "");
+            str = Regex.Replace(str, "(/table).+?(/html>)", "");
+            MatchCollection reels = Regex.Matches(str, "(colspan).+?(后记)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            foreach (Match reel in reels)
+            {
+                str = reel.Value;
+                MatchCollection chapters = Regex.Matches(str, "(href=\").+?(htm)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                foreach (Match chapter in chapters)
+                {
+                    pageCapture.GetHtml(url + chapter.Value.Replace("href=\"", ""));
+                    pageCapture.HtmlCapture(pageCapture.HtmlText);
+                    tNovelTextJ.ReelNum = reelCount;
+                    tNovelTextJ.ChapterNum = chapterCount;
+                    tNovelTextJ.Text = pageCapture.NovelText[captureCount];
+                    textJRepository.Create(tNovelTextJ);
+                    chapterCount++;
+                    captureCount++;
+                }
+                reelCount++;
+                chapterCount = 1;
+            }
+
+
         }
     }
 }

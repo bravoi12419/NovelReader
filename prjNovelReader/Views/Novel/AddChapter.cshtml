@@ -10,6 +10,6 @@
  }
 <ul class="">
     <li> @Html.ActionLink("卡提諾論壇", "AddChapterChina", "Novel",new { newNovelName= ViewBag.newNovelName, newNovelAuthor = ViewBag.newNovelAuthor },new { @class = "btn btn-default" })</li>
-    <li> @Html.ActionLink("輕小說文庫", "AddChapterJapan", "Novel", new { @class = "btn btn-default" })</li>
+    <li> @Html.ActionLink("輕小說文庫", "AddChapterJapan", "Novel", new { newNovelName = ViewBag.newNovelName, newNovelAuthor = ViewBag.newNovelAuthor }, new { @class = "btn btn-default" })</li>
 </ul>
 

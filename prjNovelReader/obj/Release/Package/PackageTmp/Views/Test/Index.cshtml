@@ -1,0 +1,274 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <title>JS練習頁面</title>
+    <style>
+        .flexBox{
+            display:flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #addBtn {
+            background-color: brown;
+            color: antiquewhite;
+            font-size: 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+        }
+            #addBtn:hover {
+                background-color: burlywood;
+            }
+        input{
+            width:150px;
+            margin:10px;
+        }
+        .show,.item{
+            margin:10px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container body-content">
+        <div>
+            <div id="hello001">
+            </div>
+            <ul id="myList"></ul>
+            <div id="parent">
+                父
+                <div id="child">子元素</div>
+            </div>
+            <div class="btn btn-default" id="btn">觸發事件</div>
+            <ul id="eventList">
+                <li>event1</li>
+                <li>event2</li>
+                <li>event3</li>
+            </ul>
+            <div style="width:500px; height:500px;background-color:aqua;" id="divArea">
+
+            </div>
+        </div>
+        <div id="JQtest" style="width:500px; height:500px;">
+            <h3 >下面JQ練習</h3>
+            <div>
+                <div class="item flexBox">
+                    <input type="text" placeholder="New Item" id="textBox" />
+                    <botton id="addBtn">Add Item</botton>
+                </div>
+                <div class="show">
+                    <ol></ol>
+                </div>
+            </div>
+            </div>
+            <div id="Test001"></div>
+        </div>
+
+        <script>
+    //JQuery練習
+            // 依照CSS之規則去選取
+            $('a'); //取得所有 a標籤元素
+            $('#JQtest'); //取得id為 JQtest的元素
+            $('.item'); // 取得 class name 為 item 的所有元素
+            $('input[name="email"]'); // 取得其 name 屬性值為 email 的 input 元素
+            $('#Id a'); //選取id 內的所有a
+            $('tr:first'); // 取得第一個找到的 tr 標籤元素
+            $('div > p'); // 取得 div 父元素其下所有直接 (不包括子元素的子元素) 的 p 子元素
+            $('').text; //內容
+            $('').val; //值
+            //事件
+            //click change keypress keyup ...
+            function add() {
+                const text = $('#textBox').val()
+                $('.show ol').append(`
+                    <li>
+                       <div class="liText">${text}</div>
+                       <span class="deleteBtn">刪除</span>
+                       <input placeholder="請輸入修改值"/>
+                       <span class="modify">修改</span>
+                    </li>`)
+                $('#textBox').val('')
+                $('li:last-child .deleteBtn').click(del)
+                $('li:last-child .modify').click(modify)
+            }
+            function del() {
+                const index = $(this).parent().index()
+                $(`li:nth-child(${index + 1})`).remove()
+            }
+            function modify() {
+                const index = $(this).parent().index()
+                const text = $(`li:nth-child(${index + 1}) input`).val()
+                $(`li:nth-child(${index + 1}) input`).val('')
+                $(`li:nth-child(${index + 1}) .liText`).html(text)
+            }
+            $('#addBtn').click(add)
+
+
+        </script>
+        <script>
+    //事件練習
+            let parent = document.getElementById('parent');
+            let child = document.getElementById('child');
+            //事件名稱   事件函數   捕獲(true)or冒泡(false)
+            parent.addEventListener('click', function () {
+                console.log('parent capturing');
+            }, true);
+
+            let btn = document.getElementById('btn');
+            btn.addEventListener('click', function (e) {
+                console.log(e);
+            });
+
+            let list = document.getElementById('eventList');
+            list.addEventListener('click', function (e) {
+                if (e.target.tagName.toLowerCase() === 'li') {
+                    console.log(e.target.textContent);
+                }
+            });
+            window.addEventListener('load', function () {
+                console.log("Load完畢!");
+            });
+            window.addEventListener('resize', function () {  //scroll 卷軸拉動
+                console.log("尺寸變化");
+            });
+            //DOMContentLoaded 當DOM完整讀取完畢就觸發
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log("DOM讀取完畢");
+                //btn.textContent = '按鈕改變';
+            });
+            let divArea = document.getElementById('divArea');
+            divArea.addEventListener('mousedown', function () {
+                console.log("按下滑鼠");
+            });
+            divArea.addEventListener('mouseup', function () {
+                console.log("放開滑鼠");
+            });
+            divArea.addEventListener('dblclick', function () {
+                console.log("滑鼠連點");
+            });
+            // IIFE 立即執行
+            (function () {
+                // 做某事...
+            })();
+            // 隨時間依序印出i
+            for (let i = 0; i < 5; i++) {
+                window.setTimeout(function () {
+                    console.log(i);
+                }, 1000 * i);
+            }
+            // 閉包closure 將變數封裝在函數裡面 能重複使用
+            function counter() {
+                let count = 0;
+                return function () {
+                    return ++count;
+                }
+            }
+            var countFunc = counter();
+            console.log(countFunc());
+            console.log(countFunc());
+            console.log(countFunc());
+            // Arrow Function 寫法
+            let counterAf = () => {
+                let count = 0;
+                return () => ++count;
+            }
+            var countFunc2 = counterAf();
+            console.log(countFunc2());
+            console.log(countFunc2());
+            console.log(countFunc2());
+
+        </script>
+        <script>
+    //DOM練習
+            // 根據傳入的值，找到 DOM 中 id 為 'xxx' 的元素。
+            document.getElementById('xxx');
+
+            // 針對給定的 tag 名稱，回傳所有符合條件的 NodeList 物件 [註1]
+            document.getElementsByTagName('xxx');
+
+            // 針對給定的 class 名稱，回傳所有符合條件的 NodeList 物件。
+            document.getElementsByClassName('xxx');
+
+            // 針對給定的 Selector 條件，回傳第一個 或 所有符合條件的 NodeList。
+            document.querySelector('xxx');
+            document.querySelectorAll('xxx');
+
+            let div = document.querySelector('#hello001');
+            div.textContent = 'Hello World!'
+            let newDiv = document.createElement('div'); //建立新的tag以及新增子tag
+            newDiv.id = "myNewDiv";
+            newDiv.className = "box";
+            let textNode = document.createTextNode("Hello2!!");
+            newDiv.appendChild(textNode);
+            div.appendChild(newDiv);
+
+            //先建立DocumentFragment 在大量DOM操作時效能會比直接操作DOM好多
+            let ul = document.getElementById("myList");
+            let fragment = document.createDocumentFragment();
+            for (let i = 0; i < 3; i++) {
+                let li = document.createElement("li");
+                li.appendChild(document.createTextNode("Item " + (i + 1)));
+                fragment.appendChild(li);
+            }
+            ul.appendChild(fragment);
+            // NODE.insertBefore(newNode, refNode); 插前面
+            // NODE.replaceChild(newChildNode, oldChildNode); 代替
+            // NODE.removeChild(childNode); 移除
+        </script>
+        <script>
+    // 基礎篇
+
+            //基本型別 依序為 字串.數字.布林.null
+            let str = "字串";
+            let num = "3";
+            let bool = true;
+            bool = (100 > 10); //比較可以隱含轉換為布林
+            let k = null;
+            //物件
+            let person = {
+                name: 'Boo',
+                job: 'coding',
+                sayName: function () {
+                    alert(this.name);
+                }
+            };
+            person.name; //person["name"];  物件屬性存取
+            delete person.job; //清除屬性  刪除後 person.job變為 undefined
+            //檢查屬性是否存在
+            console.log('name' in person); //true
+            person.hasOwnProperty('name'); //true
+
+            //陣列
+            let a = [];    // let a=["","",""];
+            a[0] = "apple"
+            a[1] = "";
+            a.length = 1; //覆寫長度 後面的元素都會被移除
+            a.push(''); //末端新增元素
+
+            //型別判斷  回傳值都為字串
+            typeof 'bana'; //字串
+            typeof null; // object
+            typeof window.alert; // function   實際上是物件 但會回傳function
+            Array.isArray(a); //陣列判斷 true
+
+            //運算子
+            let b = 100 % 33; //1
+            str = "300";
+            b = +str; //300 快速數字轉型
+            //比較  用=== !== 不會自動轉型 可以減少錯誤率
+            for (let i = 0, j = 10; i < 10; i++ , j++) { //逗號運算子，一組運算式函多組運算式
+                b = i + j;
+            }
+
+        </script>
+</body>
+</html>
